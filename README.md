@@ -5,7 +5,7 @@
 FitBuddy is a dynamic, AI-powered web application that acts as a virtual personal trainer. By taking in a user's physical metrics (age, weight) and specific fitness objectives, it instantly generates a highly customized 7-day workout protocol and daily nutrition tip.
 
 ## 👥 The Team
-* **Yash** - Lead Developer (Backend Architecture & AI Integration)
+* **Yash Gurav** - Lead Developer (Backend Architecture & AI Integration)
 * **Pranali Yadav** - UI/UX Design & Frontend Parsing
 * **Swaranjali Pisal** - Requirement Analysis & Database Schema
 * **Vedant Shirale** - Quality Assurance & Agile Documentation
@@ -29,3 +29,4 @@ FitBuddy is a dynamic, AI-powered web application that acts as a virtual persona
 4. Start the server: `uvicorn app.main:app --reload`
 
 5. Open your browser and navigate to `http://127.0.0.1:8000`
+
