@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Protocol - FitBuddy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root { --bg-dark: #0f172a; --card-bg: #1e293b; --accent: #10b981; --text-main: #f8fafc; --text-muted: #94a3b8; --border-color: #334155; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 40px 20px; line-height: 1.7; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border-color); padding: 40px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .header { text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 25px; margin-bottom: 30px; }
+        .header h1 { margin: 0 0 15px 0; font-size: 32px; font-weight: 700;}
+        .tags { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .tag { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--accent); padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;}
+        
+        .nutrition-card { background: linear-gradient(to right, rgba(16, 185, 129, 0.1), transparent); border-left: 4px solid var(--accent); padding: 25px; border-radius: 8px; margin-bottom: 35px; }
+        .nutrition-card h3 { margin-top: 0; color: var(--accent); display: flex; align-items: center; gap: 10px; font-size: 18px;}
+        
+        .ai-content h3 { color: var(--text-main); font-weight: 600; margin-top: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
+        .ai-content h4 { background: #0f172a; padding: 15px 20px; border-left: 4px solid var(--accent); border-radius: 6px; margin-top: 30px; color: var(--accent); font-weight: 600; }
+        .ai-content ul { padding-left: 20px; color: var(--text-muted); }
+        .ai-content li { margin-bottom: 10px; }
+        .ai-content strong { color: var(--text-main); }
+
+        .feedback-form label { font-weight: 500; display: block; margin-bottom: 10px; color: var(--text-muted); font-size: 14px;}
+        .feedback-form input, .feedback-form textarea { width: 100%; padding: 14px; background: #0f172a; border: 1px solid var(--border-color); color: var(--text-main); border-radius: 10px; box-sizing: border-box; font-family: inherit; margin-bottom: 20px; transition: border-color 0.3s;}
+        .feedback-form input:focus, .feedback-form textarea:focus { outline: none; border-color: var(--accent); }
+        button { background: var(--accent); color: #fff; border: none; padding: 15px 25px; border-radius: 10px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; transition: all 0.3s; box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.2);}
+        button:hover { background: #059669; transform: translateY(-2px); }
+        .success-msg { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 16px; border-radius: 10px; text-align: center; font-weight: 600; margin-bottom: 25px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if message %}
+            <div class="success-msg">✓ {{ message }}</div>
+        {% endif %}
+
+        <div class="card">
+            <div class="header">
+                <h1>Active Protocol</h1>
+                {% if username %}
+                <div class="tags">
+                    <span class="tag">ID: {{ user_id }}</span>
+                    <span class="tag">CLIENT: {{ username | upper }}</span>
+                    <span class="tag">OBJ: {{ goal | upper }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="nutrition-card">
+                <h3>⚡ Nutritional Directive</h3>
+                <div id="raw-tip" style="display: none;">{{ nutrition_tip }}</div>
+                <div id="formatted-tip" style="color: var(--text-muted);"></div>
+            </div>
+
+            <div class="ai-content">
+                <div id="raw-plan" style="display: none;">{{ workout_plan }}</div>
+                <div id="formatted-plan"></div>
+            </div>
+        </div>
+
+        <div class="card feedback-form">
+            <h3 style="margin-top: 0; color: var(--text-main);">Modify Parameters</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">Input new constraints to regenerate the protocol.</p>
+            <form action="/submit-feedback" method="POST">
+                <label>Confirm Identity (User ID)</label>
+                <input type="number" name="user_id" value="{{ user_id }}" required>
+                
+                <label>Adjustment Instructions</label>
+                <textarea name="feedback" rows="3" required placeholder="e.g., 'Switch all dumbbell exercises to barbell'"></textarea>
+                
+                <button type="submit">Recalculate Protocol</button>
+            </form>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 40px;">
+            <a href="/" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px; transition: color 0.3s;">&larr; Return to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('formatted-plan').innerHTML = marked.parse(document.getElementById('raw-plan').innerText);
+        document.getElementById('formatted-tip').innerHTML = marked.parse(document.getElementById('raw-tip').innerText);
+    </script>
+</body>
+</html>
